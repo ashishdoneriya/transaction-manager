@@ -1,0 +1,91 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aws-context="http://www.springframework.org/schema/cloud/aws/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/cloud/aws/context http://www.springframework.org/schema/cloud/aws/context/spring-cloud-aws-context-1.0.xsd">
+
+	<context:component-scan base-package="manager" />
+
+	<mvc:annotation-driven />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/www/" />
+		<property name="suffix" value=".html" />
+<!-- 		<property name="viewNames"> -->
+<!-- 			<list> -->
+<!-- 				<value>index</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+	</bean>
+	
+	 <mvc:resources mapping="/angular/www/**" location="/" />
+<!-- 	<mvc:resources mapping="/robots.txt" location="/robots.txt" order="0"/>
+	<mvc:resources mapping="/sitemap.xml" location="/sitemap.xml" order="0"/>
+	<mvc:resources mapping="/images/**" location="/static/images/" />
+	<mvc:resources mapping="/bootstrapMaterial/**" location="/static/bootstrapMaterial/" />
+	<mvc:resources mapping="/css/**" location="/static/bootstrapMaterial/css/" />
+	<mvc:resources mapping="/fonts/**" location="/static/bootstrapMaterial/fonts/" />
+	<mvc:resources mapping="/js/**" location="/static/bootstrapMaterial/js/" /> -->
+<!-- 	<mvc:resources mapping="/img/**" location="/static/bootstrapMaterial/img/" /> -->
+<!-- 	<mvc:resources mapping="/plugins/**" location="/static/bootstrapMaterial/plugins/" /> -->
+<!-- 	<mvc:resources mapping="/ajax/**" location="/static/bootstrapMaterial/ajax/" /> -->
+
+	<mvc:default-servlet-handler />
+
+	<tx:annotation-driven />
+
+	<!-- Configure JDBC Connection -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+<!-- 		<property name="url" value="jdbc:mysql://127.4.148.130:3306/test" /> -->
+<!-- 		<property name="username" value="admin3GIzagt" /> -->
+<!-- 		<property name="password" value="GIAbPGEpubh-" /> -->
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/test1" />
+		<property name="username" value="root" />
+		<property name="password" value="a" />
+	</bean>
+
+	<!-- Configure Hibernate 5 Session Facotry -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<array>
+				<value>manager.models</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="template" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="524288000000" />
+	</bean>
+
+</beans>

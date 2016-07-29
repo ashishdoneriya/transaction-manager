@@ -25,7 +25,7 @@
 <!-- 		</property> -->
 	</bean>
 	
-	 <mvc:resources mapping="/static/**" location="/angular/dist/" />
+	
 <!-- 	<mvc:resources mapping="/robots.txt" location="/robots.txt" order="0"/>
 	<mvc:resources mapping="/sitemap.xml" location="/sitemap.xml" order="0"/>
 	<mvc:resources mapping="/images/**" location="/static/images/" />
@@ -64,7 +64,7 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 		<property name="packagesToScan">

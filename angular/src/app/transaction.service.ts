@@ -1,71 +1,47 @@
 import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Observable }     from 'rxjs/Observable';
+import 'rxjs/Rx';
+
 import { Transaction } from './transaction';
 
 @Injectable()
 export class TransactionService {
 
-	getCategories(): Array<string> {
-		let categories: string = localStorage.getItem['categories'];
-		if (categories == null) {
-			return [
-				'Base',
-				'Food',
-				'Investment'
-			];
-		}
-		return JSON.parse(categories);
-	}
+	constructor(private http: Http) { }
 
-	addCategories(cat: string) {
-		let categories: Array<string> = this.getCategories();
-		categories.push(cat);
-		localStorage.setItem('categories', JSON.stringify(categories));
-	}
-
-	getAllItems(): Array<Transaction> {
-		let transactions: string = localStorage.getItem['transactions'];
-		if (transactions == null) {
-			return [];
-		}
-		return JSON.parse(transactions);
-	}
-
-	generateID(): number {
-		let sIDs: string = localStorage.getItem['IDs'];
-		if (sIDs == null) {
-			localStorage.setItem('IDs', '1');
-			return 2;
-		} else {
-			let ids: number = Number(sIDs);
-			ids++;
-			localStorage.setItem('IDs', String(ids));
-			return ids;
-		}
-	}
-
-	addTransaction(item: string, category: string) {
-		let transactions = this.getAllItems();
-		transactions.push(new Transaction(this.generateID(), item, category, new Date()));
+	getCategories(): Observable<string[]> {
+		return this.http.get('api/categories').map(res => res.json()).catch(this.handleError);
 	}
 
 	getTransaction(id: number) {
-		this.getAllItems().forEach(transaction => {
-			if (transaction.id == id) {
-				return transaction;
-			}
-		});
+		return this.http.get('api/transactions').map(res => res.json()).catch(this.handleError);
 	}
 
+	addCategories(cat: string) {
+		return this.http.post('api/add-category', JSON.stringify({ 'name': cat }));
+	}
+
+	getAllItems(): Array<Transaction> {
+		return null;
+	}
+
+	addTransaction(item: string, category: string) {
+	}
+
+
+
 	updateTransaction(id: number, item: string, category: string, date: Date) {
-		let transactions = this.getAllItems();
-		transactions.forEach(transaction => {
-			if (transaction.id == id) {
-				transaction.item = item;
-				transaction.category = category;
-				transaction.data = date;
-			}
-		});
-		localStorage.setItem('transactions', JSON.stringify(transactions));
+
+	}
+
+	private handleError(error: any) {
+		// In a real world app, we might use a remote logging infrastructure
+		// We'd also dig deeper into the error to get a better message
+		let errMsg = (error.message) ? error.message :
+			error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+		console.error(errMsg); // log to console instead
+		return Observable.throw(errMsg);
 	}
 
 

@@ -9,7 +9,7 @@
 	<display-name>Transaction Manager</display-name>
 
 	<welcome-file-list>
-		<welcome-file>/angular/www/index.html</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
 	<servlet>

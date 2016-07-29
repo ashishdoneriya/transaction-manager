@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 
 beforeEachProviders(() => [AppComponent]);
 
-describe('App: Angular', () => {
+describe('App: TransactionManager', () => {
   it('should create the app',
       inject([AppComponent], (app: AppComponent) => {
     expect(app).toBeTruthy();
